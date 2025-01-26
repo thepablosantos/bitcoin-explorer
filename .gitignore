@@ -1,0 +1,16 @@
+# Node
+node_modules
+dist
+
+# Logs
+*.log 
+
+# OS
+.DS_Store
+
+# Editor
+.vscode
+.idea
+
+# Build do React
+client/build 
