@@ -26,10 +26,14 @@ router.get('/:walletName/balance', async (req, res) => {
   try {
     const { walletName } = req.params;
 
-    // Carrega a wallet e obtém o saldo
-    await client.command('loadwallet', walletName);
-    const balance = await client.command('getbalance', '*');
+    // Verifica se a carteira já está carregada
+    const loadedWallets = await client.command('listwallets');
+    if (!loadedWallets.includes(walletName)) {
+      await client.command('loadwallet', walletName);
+    }
 
+    // Obtém o saldo da carteira
+    const balance = await client.command('getbalance');
     res.json({ walletName, balance });
   } catch (error) {
     console.error('Error fetching wallet balance:', error);
@@ -42,10 +46,14 @@ router.get('/:walletName/addresses', async (req, res) => {
   try {
     const { walletName } = req.params;
 
-    // Carrega a wallet e obtém os endereços
-    await client.command('loadwallet', walletName);
-    const addresses = await client.command('getaddressesbylabel', '');
+    // Verifica se a carteira já está carregada
+    const loadedWallets = await client.command('listwallets');
+    if (!loadedWallets.includes(walletName)) {
+      await client.command('loadwallet', walletName);
+    }
 
+    // Obtém os endereços associados à carteira
+    const addresses = await client.command('getaddressesbylabel', '');
     res.json({ walletName, addresses });
   } catch (error) {
     console.error('Error fetching wallet addresses:', error);
