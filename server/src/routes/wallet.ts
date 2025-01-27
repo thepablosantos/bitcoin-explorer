@@ -55,9 +55,33 @@ router.get('/:walletName/addresses', async (req, res) => {
     // Obtém os endereços associados à carteira
     const addresses = await client.command('getaddressesbylabel', '');
     res.json({ walletName, addresses });
-  } catch (error) {
+  } catch (err) {
+    const error = err as { code?: number; message?: string }; // Fazendo "type assertion"
+    if (error.code === -11) {
+      return res.json({ walletName: req.params.walletName, addresses: {}, message: 'No addresses found in this wallet.' });
+    }
     console.error('Error fetching wallet addresses:', error);
     res.status(500).json({ error: 'Error fetching wallet addresses' });
+  }
+});
+
+// Criar um novo endereço na carteira
+router.post('/:walletName/newaddress', async (req, res) => {
+  try {
+    const { walletName } = req.params;
+
+    // Verifica se a carteira já está carregada
+    const loadedWallets = await client.command('listwallets');
+    if (!loadedWallets.includes(walletName)) {
+      await client.command('loadwallet', walletName);
+    }
+
+    // Gera um novo endereço
+    const newAddress = await client.command('getnewaddress');
+    res.status(201).json({ walletName, newAddress });
+  } catch (error) {
+    console.error('Error generating new address:', error);
+    res.status(500).json({ error: 'Error generating new address' });
   }
 });
 
