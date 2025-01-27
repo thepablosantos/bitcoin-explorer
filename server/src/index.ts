@@ -4,7 +4,7 @@ import express from 'express';
 import blockRoutes from './routes/block';
 import transactionRoutes from './routes/transaction';
 import walletRoutes from './routes/wallet';
-import mineRoutes from './routes/mine';
+import addressRoutes from './routes/address';
 import { client } from './bitcoin';
 
 const app = express();
@@ -46,7 +46,7 @@ app.get('/api/block/:height', async (req, res) => {
 app.use('/api/block', blockRoutes);
 app.use('/api/transaction', transactionRoutes);
 app.use('/api/wallet', walletRoutes);
-app.use('/api/mine', mineRoutes);
+app.use('/api/address', addressRoutes);
 
 // Subindo o servidor
 const PORT = 3001;

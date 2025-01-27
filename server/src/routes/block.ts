@@ -1,23 +1,47 @@
 import express from 'express';
-import { client } from '../bitcoin'; // Importa o client
+import { client } from '../bitcoin';
 
 const router = express.Router();
 
-// Exemplo de rota para blocos
-router.get('/:height', async (req, res) => {
+// Listar últimos blocos
+router.get('/recent/:count', async (req, res) => {
   try {
-    const height = Number(req.params.height);
+    const count = Number(req.params.count) || 10;
+    const bestBlockHeight = await client.command('getblockcount');
+    const recentBlocks = [];
 
-    // Recupera o hash do bloco nessa altura (Exemplo)
-    const blockHash = await client.command('getblockhash', height);
+    for (let i = 0; i < count; i++) {
+      const height = bestBlockHeight - i;
+      if (height < 0) break;
 
-    // Recupera os dados do bloco pelo hash
-    const blockData = await client.command('getblock', blockHash);
+      const blockHash = await client.command('getblockhash', height);
+      const blockData = await client.command('getblock', blockHash);
 
-    res.json({ blockHash, block: blockData });
+      recentBlocks.push({
+        height,
+        hash: blockHash,
+        time: blockData.time,
+        txCount: blockData.tx.length,
+      });
+    }
+
+    res.json({ recentBlocks });
   } catch (error) {
-    console.error('Error fetching block data:', error);
-    res.status(500).json({ error: 'Error fetching block data' });
+    console.error('Error fetching recent blocks:', error);
+    res.status(500).json({ error: 'Error fetching recent blocks' });
+  }
+});
+
+// Detalhes de um bloco específico
+router.get('/:hash', async (req, res) => {
+  try {
+    const { hash } = req.params;
+
+    const blockData = await client.command('getblock', hash);
+    res.json({ blockData });
+  } catch (error) {
+    console.error('Error fetching block details:', error);
+    res.status(500).json({ error: 'Error fetching block details' });
   }
 });
 
