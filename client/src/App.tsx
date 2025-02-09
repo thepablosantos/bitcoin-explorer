@@ -1,28 +1,30 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Dashboard from "./pages/Dashboard";
-import Wallet from "./pages/Wallet";
-import Mining from "./pages/Mining";
-import Explorer from "./pages/Explorer";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Dashboard from './pages/Dashboard';
+import Wallet from './pages/Wallet';
+import Mining from './pages/Mining';
+import Explorer from './pages/Explorer';
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <div className="bg-gray-800 text-white min-h-screen flex flex-col">
+    <BrowserRouter>
+      {/* Flex container para que o Footer fique no final */}
+      <div className="flex flex-col min-h-screen bg-gray-900 text-white">
         <Navbar />
-        <main className="flex-grow p-6">
+        {/* Espaço para não ficar atrás da navbar fixa */}
+        <div className="pt-16 flex-grow">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/mining" element={<Mining />} />
             <Route path="/explorer" element={<Explorer />} />
           </Routes>
-        </main>
+        </div>
         <Footer />
       </div>
-    </Router>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;

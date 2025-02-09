@@ -1,7 +1,9 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-400 text-center py-4 text-sm">
-      © 2025 Bitcoin Explorer
+    <footer className="bg-gray-900 py-4 text-center text-sm text-gray-400 mt-auto border-t border-gray-700">
+      <p>
+        © {new Date().getFullYear()} Bitcoin Explorer - Todos os direitos reservados.
+      </p>
     </footer>
   );
 };
