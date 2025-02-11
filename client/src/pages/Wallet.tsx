@@ -1,3 +1,4 @@
+// src/pages/Wallet.tsx
 import { useState } from "react";
 
 const Wallet = () => {
@@ -10,6 +11,7 @@ const Wallet = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ walletName }),
     });
+    // Você pode colocar um alerta de sucesso se quiser
   };
 
   const generateAddress = async () => {
@@ -22,36 +24,40 @@ const Wallet = () => {
   };
 
   return (
-    <div className="bg-gray-900 p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-blue-400">Bitcoin Wallets</h2>
+    <section>
+      <h1 className="text-3xl font-semibold mb-6">Bitcoin Wallet</h1>
 
-      <div className="flex gap-4 mt-4">
-        <input
-          type="text"
-          placeholder="Wallet name"
-          value={walletName}
-          onChange={(e) => setWalletName(e.target.value)}
-          className="p-2 bg-gray-800 border border-gray-700 rounded"
-        />
-        <button
-          onClick={createWallet}
-          className="bg-green-600 px-4 py-2 rounded"
-        >
-          Create Wallet
-        </button>
-      </div>
+      <div className="bg-gray-800 p-6 rounded-lg shadow-md">
+        <div className="flex flex-col md:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="Wallet name"
+            value={walletName}
+            onChange={(e) => setWalletName(e.target.value)}
+            className="p-2 bg-gray-700 border border-gray-600 rounded w-full md:w-auto"
+          />
+          <button
+            onClick={createWallet}
+            className="bg-btcOrange px-4 py-2 rounded text-black font-semibold hover:opacity-90 transition"
+          >
+            Create Wallet
+          </button>
+        </div>
 
-      <div className="mt-6 p-4 border border-gray-700 rounded">
-        <p className="text-gray-400">Wallet Address:</p>
-        <p className="text-green-300">{newAddress || "No address generated"}</p>
-        <button
-          onClick={generateAddress}
-          className="mt-2 bg-green-600 px-4 py-2 rounded"
-        >
-          Generate Address
-        </button>
+        <div className="mt-6 p-4 border border-gray-700 rounded">
+          <p className="text-gray-400 text-sm">Generated Wallet Address:</p>
+          <p className="text-btcOrange font-medium break-all">
+            {newAddress || "No address generated yet"}
+          </p>
+          <button
+            onClick={generateAddress}
+            className="mt-2 bg-btcOrange px-4 py-2 rounded text-black font-semibold hover:opacity-90 transition"
+          >
+            Generate Address
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

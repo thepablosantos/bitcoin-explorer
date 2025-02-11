@@ -1,3 +1,4 @@
+// src/pages/Mining.tsx
 import { useState } from "react";
 
 const Mining = () => {
@@ -11,28 +12,37 @@ const Mining = () => {
       body: JSON.stringify({ blocks }),
     });
     const data = await response.json();
-    setMinedBlocks(data.minedBlocks);
+    setMinedBlocks(data.minedBlocks || []);
   };
 
   return (
-    <div className="bg-gray-900 p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-yellow-400">Bitcoin Mining</h2>
-      <p className="text-gray-400">Number of blocks to mine:</p>
-      <input
-        type="number"
-        value={blocks}
-        onChange={(e) => setBlocks(Number(e.target.value))}
-        className="p-2 bg-gray-800 border border-gray-700 rounded mt-2"
-      />
-      <button onClick={mineBlocks} className="ml-4 bg-green-600 px-4 py-2 rounded">
-        Start Mining
-      </button>
-      {minedBlocks.length > 0 && (
-        <pre className="bg-gray-800 p-4 rounded-md mt-4 text-sm">
-          {JSON.stringify(minedBlocks, null, 2)}
-        </pre>
-      )}
-    </div>
+    <section>
+      <h1 className="text-3xl font-semibold mb-6">Bitcoin Mining</h1>
+
+      <div className="bg-gray-800 p-6 rounded-lg shadow-md">
+        <p className="text-gray-300 mb-2">Number of blocks to mine:</p>
+        <div className="flex items-center space-x-4">
+          <input
+            type="number"
+            value={blocks}
+            onChange={(e) => setBlocks(Number(e.target.value))}
+            className="p-2 bg-gray-700 border border-gray-600 rounded"
+          />
+          <button
+            onClick={mineBlocks}
+            className="bg-btcOrange px-4 py-2 rounded text-black font-semibold hover:opacity-90 transition"
+          >
+            Start Mining
+          </button>
+        </div>
+
+        {minedBlocks.length > 0 && (
+          <pre className="bg-gray-900 p-4 rounded-md mt-4 text-sm">
+            {JSON.stringify(minedBlocks, null, 2)}
+          </pre>
+        )}
+      </div>
+    </section>
   );
 };
 

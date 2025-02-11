@@ -1,3 +1,4 @@
+// src/pages/Explorer.tsx
 const Explorer = () => {
   const blocks = [
     { height: 765432, hash: "000000000abc...", time: "2025-01-01 12:00" },
